@@ -35,7 +35,7 @@ public class ChessBoard {
      */
     public ChessPiece getPiece(ChessPosition position) {
         //throw new RuntimeException("Not implemented");
-        squares[position.getRow()-1][position.getColumn()-1] = piece;
+        return squares[position.getRow()-1][position.getColumn()-1] = piece;
         // -1 takes from a 0 based index so instead of 0-7 you have 1-8
     }
 
