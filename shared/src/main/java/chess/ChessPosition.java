@@ -36,9 +36,10 @@ public class ChessPosition {
     //right click, to string, this is so the position isn't messy in debug
     @Override
     public String toString() {
-        return "ChessPosition{" +
-                "row=" + row +
-                ", col=" + col +
-                '}';
+//        return "ChessPosition{" +
+//                "row=" + row +
+//                ", col=" + col +
+//                '}';
+        return String.format("[%d,%d]", row, col); // easier to read format
     }
 }
