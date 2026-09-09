@@ -30,14 +30,15 @@ private ChessPiece[][] board = new ChessPiece[8][8];
      * Gets a chess piece on the chessboard
      *
      * @param position The position to get the piece from
-     * @return Either the piece at the position, or null if no piece is at that
-     * position
+     * @return
      */
     public ChessPiece getPiece(ChessPosition position) {
         //throw new RuntimeException("Not implemented");
+        ChessPiece piece = null;
         board[position.getRow()-1][position.getColumn()-1] = piece;
         //return squares[position.getRow()-1][position.getColumn()-1] = piece;
         // -1 takes from a 0 based index so instead of 0-7 you have 1-8
+        return null;
     }
 
     /**
