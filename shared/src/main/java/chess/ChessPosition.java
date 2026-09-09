@@ -33,4 +33,12 @@ public class ChessPosition {
         return col;
         //throw new RuntimeException("Not implemented");
     }
+    //right click, to string, this is so the position isn't messy in debug
+    @Override
+    public String toString() {
+        return "ChessPosition{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
+    }
 }
