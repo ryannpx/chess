@@ -56,6 +56,6 @@ public class ChessMove {
 //                ", endPosition=" + endPosition +
 //                ", promotionPiece=" + promotionPiece +
 //                '}';
-        return String.format("[%s%s]", startPosition, endPosition); //easier to read
+        return String.format("%s%s", startPosition, endPosition); //easier to read
     }
 }

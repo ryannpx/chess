@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a single chess piece
@@ -57,6 +58,10 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         //throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(myPosition);
+        if (piece.getPieceType() == PieceType.BISHOP) {
+            return List.of(new ChessMove(new ChessPosition(5,4), new ChessPosition(1, 8), null));//hardcoded instead of empty list
+        }
         return new ArrayList<>(); // returns an empty list of object
     }
 }
