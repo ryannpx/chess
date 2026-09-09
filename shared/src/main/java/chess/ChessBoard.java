@@ -8,6 +8,9 @@ package chess;
  */
 public class ChessBoard {
 private ChessPiece[][] board = new ChessPiece[8][8];
+    private ChessPosition position;
+    private ChessPiece piece;
+
     //ChessPiece[][] = new ChessPiece[8][8];
     public ChessBoard() {
         
@@ -20,6 +23,8 @@ private ChessPiece[][] board = new ChessPiece[8][8];
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
+        this.position = position;
+        this.piece = piece;
         //throw new RuntimeException("Not implemented");
         board[position.getRow()-1][position.getColumn()-1] = piece;
         //squares[position.getRow()-1][position.getColumn()-1] = piece;
@@ -34,11 +39,10 @@ private ChessPiece[][] board = new ChessPiece[8][8];
      */
     public ChessPiece getPiece(ChessPosition position) {
         //throw new RuntimeException("Not implemented");
-        ChessPiece piece = null;
-        board[position.getRow()-1][position.getColumn()-1] = piece;
+        return board[position.getRow()-1][position.getColumn()-1] = piece;
         //return squares[position.getRow()-1][position.getColumn()-1] = piece;
         // -1 takes from a 0 based index so instead of 0-7 you have 1-8
-        return null;
+
     }
 
     /**
