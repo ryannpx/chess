@@ -60,8 +60,28 @@ public class ChessPiece {
         //throw new RuntimeException("Not implemented");
         ChessPiece piece = board.getPiece(myPosition);
         if (piece.getPieceType() == PieceType.BISHOP) {
-            return List.of(new ChessMove(new ChessPosition(5,4), new ChessPosition(1, 8), null));//hardcoded instead of empty list
+            Collection<ChessMove> moves = new ArrayList<>();
+
+            //downleft, up left, up right
+            //r-1 c-1     r +1c-1    r+1 c+1
+
+            int row = myPosition.getRow();
+            int col = myPosition.getColumn();
+            //down, right
+            int r = row -1;
+            int c = col +1;
+            while (r >= 1 && r <= 8 && c >= 1 && c <= 8) { //while its on the board
+                moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                r = r -1;
+                c = c +1;
+            }
+
+
+
+
+            return moves;
+            //return List.of(new ChessMove(new ChessPosition(5,4), new ChessPosition(1, 8), null));//hardcoded instead of empty list
         }
-        return new ArrayList<>(); // returns an empty list of object
+        return moves; // returns an empty list of object
     }
 }
