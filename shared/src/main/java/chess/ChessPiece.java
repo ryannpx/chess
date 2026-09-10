@@ -75,6 +75,30 @@ public class ChessPiece {
                 r = r -1;
                 c = c +1;
             }
+            // down-left
+            r = row - 1;
+            c = col - 1;
+            while (r >= 1 && r <= 8 && c >= 1 && c <= 8) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                r = r - 1;
+                c = c - 1;
+            }
+            //up left
+            r = row + 1;
+            c = col -1;
+            while (r>=1 && r<= 8 && c>= 1 && c <=8) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                r = r +1;
+                c = c -1;
+            }
+            //up right
+            r = row +1;
+            c = col +1;
+            while (r>=1 && r<=8 && c>=1 && c<=8){
+                moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                r = r +1;
+                c = c+1;
+            }
 
 
 
