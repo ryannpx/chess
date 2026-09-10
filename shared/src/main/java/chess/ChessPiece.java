@@ -106,6 +106,6 @@ public class ChessPiece {
             return moves;
             //return List.of(new ChessMove(new ChessPosition(5,4), new ChessPosition(1, 8), null));//hardcoded instead of empty list
         }
-        return moves; // returns an empty list of object
+        return null; // returns an empty list of object
     }
 }
