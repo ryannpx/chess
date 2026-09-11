@@ -393,6 +393,41 @@ public class ChessPiece {
             return moves;
         }
 
+        if (getPieceType() == PieceType.KNIGHT) {
+            Collection<ChessMove> moves= new ArrayList<>();
+
+            int row = myPosition.getRow();
+            int col = myPosition.getColumn();
+
+            int[][] jumps = {
+                    {2, 1},
+                    {2, -1},
+                    {-2, 1},
+                    {-2, -1},
+                    {1, 2},
+                    {1, -2},
+                    {-1, 2},
+                    {-1, -2}
+            };
+
+            for (int[] jump : jumps) {
+                int r = row + jump[0];
+                int c = col + jump[1];
+
+                if (r < 1 || r > 8 || c < 1 || c > 8) {
+                    continue;
+                }
+
+                ChessPiece occupant = board.getPiece(new ChessPosition(r, c));
+                if (occupant == null) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                } else if (occupant.getTeamColor() != piece.getTeamColor()) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                }
+            }
+
+            return moves;
+        }
 
 
         return new ArrayList<>(); // returns an empty list of object
