@@ -62,7 +62,7 @@ public class ChessPiece {
         if (piece.getPieceType() == PieceType.BISHOP) {
             Collection<ChessMove> moves = new ArrayList<>();
 
-            //downleft, up left, up right
+            //down left, up left, up right
             //r-1 c-1     r +1c-1    r+1 c+1
 
             int row = myPosition.getRow();
@@ -71,15 +71,41 @@ public class ChessPiece {
             int r = row -1;
             int c = col +1;
             while (r >= 1 && r <= 8 && c >= 1 && c <= 8) { //while its on the board
-                moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
-                r = r -1;
-                c = c +1;
+//                moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+//                r = r -1;
+//                c = c +1;
+                ChessPiece occupant = board.getPiece(new ChessPosition(r ,c));
+
+                if (occupant == null) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                }
+                else if (occupant.getTeamColor() != piece.getTeamColor()){
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                    break;
+                }
+                else {
+                    break;
+                }
+                r = r - 1;
+                c = c + 1;
             }
             // down-left
             r = row - 1;
             c = col - 1;
             while (r >= 1 && r <= 8 && c >= 1 && c <= 8) {
-                moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                //moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                ChessPiece occupant = board.getPiece(new ChessPosition(r, c));
+
+                if (occupant == null) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                }
+                else if (occupant.getTeamColor() != piece.getTeamColor()) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                    break;
+                }
+                else {
+                    break;
+                }
                 r = r - 1;
                 c = c - 1;
             }
@@ -87,7 +113,18 @@ public class ChessPiece {
             r = row + 1;
             c = col -1;
             while (r>=1 && r<= 8 && c>= 1 && c <=8) {
-                moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                //moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                ChessPiece occupant = board.getPiece(new ChessPosition(r, c));
+                if (occupant == null) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                }
+                else if (occupant.getTeamColor() != piece.getTeamColor()) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                    break;
+                }
+                else {
+                    break;
+                }
                 r = r +1;
                 c = c -1;
             }
@@ -95,7 +132,18 @@ public class ChessPiece {
             r = row +1;
             c = col +1;
             while (r>=1 && r<=8 && c>=1 && c<=8){
-                moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                //moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
+                ChessPiece occupant = board.getPiece(new ChessPosition(r ,c));
+                if (occupant == null) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                }
+                else if (occupant.getTeamColor() != piece.getTeamColor()) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(r,c) , null));
+                    break;
+                }
+                else {
+                    break;
+                }
                 r = r +1;
                 c = c+1;
             }
