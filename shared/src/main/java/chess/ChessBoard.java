@@ -16,16 +16,19 @@ private ChessPiece[][] board = new ChessPiece[8][8];
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
         ChessBoard that = (ChessBoard) o;
-        return Objects.deepEquals(board, that.board) && Objects.equals(position, that.position) && Objects.equals(piece, that.piece);
+        return Arrays.deepEquals(board, that.board);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Arrays.deepHashCode(board), position, piece);
+        return Arrays.deepHashCode(board);
     }
 
     //ChessPiece[][] = new ChessPiece[8][8];
