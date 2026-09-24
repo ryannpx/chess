@@ -24,7 +24,6 @@ public class ChessPosition {
      */
     public int getRow() {
         return row;
-        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -33,16 +32,11 @@ public class ChessPosition {
      */
     public int getColumn() {
         return col;
-        //throw new RuntimeException("Not implemented");
     }
-    //right click, to string, this is so the position isn't messy in debug
+
     @Override
     public String toString() {
-//        return "ChessPosition{" +
-//                "row=" + row +
-//                ", col=" + col +
-//                '}';
-        return String.format("[%d,%d]", row, col); // easier to read format // hash, @override to string hashcode record
+        return String.format("[%d,%d]", row, col);
     }
 
     @Override
