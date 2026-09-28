@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -54,7 +55,30 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+       // throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(startPosition);
+        if (piece == null){
+            return null;
+        }
+        Collection<ChessMove> isLegal = new ArrayList<>();
+        for (ChessMove move : piece.pieceMoves(board,startPosition)){
+            ChessBoard original = board;
+            board = copyBoard();
+            ChessPiece.PieceType promo = move.getPromotionPiece();
+            if (promo != null) {
+                board.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), promo));
+            } else {
+                board.addPiece(move.getEndPosition(), piece);
+            }
+            board.addPiece(move.getStartPosition(), null);
+            boolean kingInCheck = isInCheck(piece.getTeamColor());
+            board = original;
+            if (!kingInCheck) {
+                isLegal.add(move);
+            }
+
+        }
+        return isLegal;
     }
 
     /**
@@ -153,5 +177,20 @@ public class ChessGame {
     public ChessBoard getBoard() {
         return board;
         //throw new RuntimeException("Not implemented");
+    }
+
+//makes a copy so the piece isnt in a fake position
+    private ChessBoard copyBoard() {
+        ChessBoard copy = new ChessBoard();
+        for (int row = 1; row <= 8; row++) {
+            for (int col = 1; col <= 8; col++) {
+                ChessPosition pos = new ChessPosition(row, col);
+                ChessPiece piece = board.getPiece(pos);
+                if (piece != null) {
+                    copy.addPiece(pos, piece);
+                }
+            }
+        }
+        return copy;
     }
 }
