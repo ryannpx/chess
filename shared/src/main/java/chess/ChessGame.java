@@ -77,9 +77,8 @@ public class ChessGame {
         ChessPosition kingPosition = null;
 
         // find the king
-        for (int row =1; row <=8; row++ );{
-
-            for (int col = 1; col <= 8; col++) ;{
+        for (int row =1; row <=8; row++ ) {
+            for (int col = 1; col <= 8; col++) {
 
                 ChessPosition pos = new ChessPosition(row, col);
                 ChessPiece piece = board.getPiece(pos);
@@ -91,10 +90,27 @@ public class ChessGame {
             }
         }
         // see if any enemy can get the king
+        for (int row =1; row <=8; row++ ){
+            for (int col = 1; col <= 8; col++) {
 
+                ChessPosition pos = new ChessPosition(row, col);
+                ChessPiece piece = board.getPiece(pos);
 
-
-        Collection<ChessMove> moves = piece.pieceMoves(board, pos);
+                if (piece == null){
+                    continue;
+                }
+                if (piece.getTeamColor() == teamColor){
+                    continue;
+                }
+                Collection<ChessMove> moves = piece.pieceMoves(board, pos);
+                for (ChessMove move : moves) {
+                    if (move.getEndPosition().equals(kingPosition)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
         //throw new RuntimeException("Not implemented");
     }
 
