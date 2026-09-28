@@ -88,7 +88,32 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+       // throw new RuntimeException("Not implemented");
+
+        ChessPiece piece = board.getPiece(move.getStartPosition());
+        if (piece == null){
+            throw new InvalidMoveException(); //up there
+        }
+        if (piece.getTeamColor() != teamTurn) {
+            throw new InvalidMoveException();
+        }
+        Collection<ChessMove> legal = validMoves(move.getStartPosition());
+        if (!legal.contains(move)) {
+            throw new InvalidMoveException();
+        }
+        // same put down and pick up as validMove but on  real board
+        ChessPiece.PieceType promo = move.getPromotionPiece();
+        if (promo != null) {
+            board.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), promo));
+        } else {
+            board.addPiece(move.getEndPosition(), piece);
+        }
+        board.addPiece(move.getStartPosition(), null);
+        if (teamTurn == TeamColor.WHITE) {
+            teamTurn = TeamColor.BLACK;
+        } else {
+            teamTurn = TeamColor.WHITE;
+        }
     }
 
     /**
