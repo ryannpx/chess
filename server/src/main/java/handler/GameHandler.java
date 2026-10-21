@@ -20,9 +20,16 @@ public class GameHandler {
     }
 
     public void createGame(Context ctx) throws Exception {
-        String authToken = // same as listGames
-                CreateGameRequest request =  gson.fromJson(ctx.body(), CreateGameRequest.class);// gson.fromJson(...) with CreateGameRequest.class
-                CreateGameResult result = userService.login(request);// call gameService.createGame with BOTH the token and the request
-                ctx.status(200).result(gson.toJson(result)); // send result as JSON with status 200
+        String authToken = ctx.header("authorization");
+        CreateGameRequest request = gson.fromJson(ctx.body(), CreateGameRequest.class);
+        CreateGameResult result = gameService.createGame(authToken, request);
+        ctx.status(200).result(gson.toJson(result));
+    }
+
+    public void joinGame(Context ctx) throws Exception {
+        String authToken = ctx.header("authorization");
+        JoinGameRequest request = gson.fromJson(ctx.body(), JoinGameRequest.class);
+        gameService.joinGame(authToken, request);
+        ctx.status(200).result("{}");
     }
 }
