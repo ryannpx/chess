@@ -6,15 +6,16 @@ import java.sql.SQLException;
 
 public class MySQLUserDAO implements UserDAO{
 
-    public MySQLUserDAO throws DataAccessException{
+    public MySQLUserDAO() throws DataAccessException{
         DatabaseManager.createDatabase();
         String sql = """
-            create table if these dont exist ,
-            user (username VARCHAR(255) NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL,
-            PRIMARY KEY (username),
-            """;
+            CREATE TABLE IF NOT EXISTS user (
+        username VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        PRIMARY KEY (username)
+    )
+    """;
 
         try (var connection = DatabaseManager.getConnection(); var prepareStatement = connection.prepareStatement(sql)) {
             prepareStatement.executeUpdate();
