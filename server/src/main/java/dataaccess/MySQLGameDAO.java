@@ -70,7 +70,20 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public GameData getGame(int gameID) throws DataAccessException {
-        throw new UnsupportedOperationException();
+        String sql = "SELECT gameID, whiteUsername, blackUsername, gameName, game FROM game WHERE gameID = ?";
+        try (var connection = DatabaseManager.getConnection();
+             var ps = connection.prepareStatement(sql)) {
+            // set ? 1 to gameID (it's an int, so use setInt)
+            ps.setInt(1, gameID);
+            try (var rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return readGame(rs);// return the game, using your helper
+                }
+                return null;// no row found, so return null
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException("Error: unable to get game", ex);
+        }
     }
 
     @Override
@@ -81,7 +94,7 @@ public class MySQLGameDAO implements GameDAO {
              var ps = connection.prepareStatement(sql);
              var rs = ps.executeQuery()) {
             while (rs.next()) {
-                games.add(readGames(rs));// add readGame(rs) to the games list
+                games.add(readGame(rs));// add readGame(rs) to the games list
             }
         } catch (SQLException ex) {
             throw new DataAccessException("Error: unable to list games", ex);
