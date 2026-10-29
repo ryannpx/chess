@@ -47,6 +47,23 @@ public class MySQLGameDAO implements GameDAO {
         }
     }
 
+
+
+
+
+
+    private GameData readGame(ResultSet rs) throws SQLException {
+        int gameID = rs.getInt("gameID");
+
+        String whiteUsername = rs.getString("whiteUsername");
+        String blackUsername = rs.getString("blackUsername");
+        String gameName = rs.getString("gameName");
+
+        ChessGame game = new Gson().fromJson(rs.getString("game"), ChessGame.class);
+
+        return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
+    }
+
     @Override
     public GameData getGame(int gameID) throws DataAccessException {
         throw new UnsupportedOperationException();
