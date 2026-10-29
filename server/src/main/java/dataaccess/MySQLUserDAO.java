@@ -26,9 +26,27 @@ public class MySQLUserDAO implements UserDAO{
         }
     }
 
+
+
+try (var rs = ps.executeQuery()) {
+        if (rs.next()) {                          // move to the first row; false if there are no rows
+            String name = rs.getString("username");   // read a column by name
+            // ...
+        }
+    }
+
     @Override
     public void createUser(UserData user) throws DataAccessException {
-        throw new UnsupportedOperationException();
+        String sql = "INSERT INTO user (username, password, email) VALUES (?,?,?)";
+        try (var connection = DatabaseManager.getConnection();
+             var ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.username()); // first ?
+            ps.setString(2, user.password()); // second ?
+            ps.setString(3, user.email()); // third ?
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error, unable to create user", ex);
+        }
     }
 
     @Override
