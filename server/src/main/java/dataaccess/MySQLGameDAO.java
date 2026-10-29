@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 public class MySQLGameDAO implements GameDAO {
 
     public MySQLGameDAO() throws DataAccessException {
@@ -71,7 +75,18 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public Collection<GameData> listGames() throws DataAccessException {
-        throw new UnsupportedOperationException();
+        var games = new ArrayList<GameData>();
+        String sql = "SELECT gameID, whiteUsername, blackUsername, gameName, game FROM game";
+        try (var connection = DatabaseManager.getConnection();
+             var ps = connection.prepareStatement(sql);
+             var rs = ps.executeQuery()) {
+            while (rs.next()) {
+                games.add(readGames(rs));// add readGame(rs) to the games list
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException("Error: unable to list games", ex);
+        }
+        return games;
     }
 
     @Override
