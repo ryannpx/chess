@@ -73,7 +73,7 @@ public class MySQLUserDAO implements UserDAO{
             ps.executeUpdate();
         }
         catch (SQLException ex) {
-            throw new DataAccessException("Error, unable to create user", ex);
+            throw new DataAccessException("Error, unable to clear users", ex);
         }
 
     }
