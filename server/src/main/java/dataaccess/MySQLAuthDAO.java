@@ -47,7 +47,7 @@ public class MySQLAuthDAO implements AuthDAO{
 
     @Override
     public AuthData getAuth(String authToken) throws DataAccessException {
-        String sql = "SELECT username, password, email FROM auth WHERE authToken = ?";
+        String sql = "SELECT authToken, username FROM auth WHERE authToken = ?";
         try (var connection = DatabaseManager.getConnection();
              var ps = connection.prepareStatement(sql)) {
             // set the ? to token
@@ -90,9 +90,3 @@ public class MySQLAuthDAO implements AuthDAO{
             }
 
         }
-
-
-
-
-
-}
