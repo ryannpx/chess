@@ -1,4 +1,5 @@
 package service;
+import org.mindrot.jbcrypt.BCrypt;
 
 import dataaccess.*;
 import model.*;
@@ -21,8 +22,9 @@ public class UserService {
         if (userDAO.getUser(request.username()) != null) {
             throw new AlreadyTakenException("Error: already taken");
         }
+        String hashed = BCrypt.hashpw(request.password(), BCrypt.gensalt());
+        userDAO.createUser(new UserData(request.username(), hashed, request.email()));
 
-        userDAO.createUser(new UserData(request.username(), request.password(), request.email()));
 
         String token = createToken(request.username());
 
@@ -35,7 +37,7 @@ public class UserService {
             throw new BadRequestException("Error: bad request");
         }
         UserData user = userDAO.getUser(request.username());
-        if (user == null || !user.password().equals(request.password())) {
+        if (user == null || !BCrypt.checkpw(request.password(), user.password())) {
             throw new UnauthorizedException("Error: unauthorized");
         }
 
