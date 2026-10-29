@@ -15,9 +15,14 @@ public class Server {
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
-        UserDAO userDAO = new MemoryUserDAO();
-        AuthDAO authDAO = new MemoryAuthDAO();
-        GameDAO gameDAO = new MemoryGameDAO();
+        try {
+        UserDAO userDAO = new MySQLUserDAO();
+        AuthDAO authDAO = new MySQLAuthDAO();
+        GameDAO gameDAO = new MySQLGameDAO();
+        } catch (DataAccessException ex) {
+            throw new RuntimeException("Unable to start server: " + ex.getMessage(), ex);
+        }//handle it in try catch
+
 
         UserHandler userHandler = new UserHandler(new UserService(userDAO, authDAO));
         GameHandler gameHandler = new GameHandler(new GameService(gameDAO, authDAO));
