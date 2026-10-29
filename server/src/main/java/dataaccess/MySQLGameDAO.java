@@ -3,13 +3,10 @@ package dataaccess;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import model.GameData;
-import model.UserData;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
-
-import javax.xml.crypto.Data;
 
 public class MySQLGameDAO implements GameDAO {
 
@@ -24,40 +21,49 @@ public class MySQLGameDAO implements GameDAO {
                     game LONGTEXT NOT NULL,
                     PRIMARY KEY (gameID)
                 )
-                
                 """;
+        try (var connection = DatabaseManager.getConnection();
+             var ps = connection.prepareStatement(sql)) {
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("Error: unable to configure database", ex);
+        }
+    }
 
-
-        String json = new Gson().toJson(chessGame);
-        ChessGame chessGame = new Gson().fromJson(json, ChessGame.class);
-
-
+    @Override
+    public int createGame(String gameName) throws DataAccessException {
+        String sql = "INSERT INTO game (gameName, game) VALUES (?, ?)";
         try (var connection = DatabaseManager.getConnection();
              var ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            // ... set the ?s ...
+            ps.setString(1, gameName);
+            ps.setString(2, new Gson().toJson(new ChessGame()));
             ps.executeUpdate();
-            try (var rs = ps.getGeneratedKeys()) {
-                rs.next();
-                return rs.getInt(1);   // the new gameID
-            }
-        }
-
-
-        @Override
-        public void createGame (String gameName) throws DataAccessException {
-            String sql = "INSERT INTO game (gameName, game) VALUES (?, ?)";
-            try (var connection = DatabaseManager.getConnection();
-                 var ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setString(1, game.gameName()); // first ?
-                ps.setString(2, new Gson().toJson(new ChessGame()); // second ?
-                ps.executeUpdate();
-            }
             try (var rs = ps.getGeneratedKeys()) {
                 rs.next();
                 return rs.getInt(1);
             }
-            catch (SQLException ex) {
-                throw new DataAccessException("Error, unable to create game", ex);
-            }
+        } catch (SQLException ex) {
+            throw new DataAccessException("Error: unable to create game", ex);
         }
     }
+
+    @Override
+    public GameData getGame(int gameID) throws DataAccessException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Collection<GameData> listGames() throws DataAccessException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void updateGame(GameData game) throws DataAccessException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void clear() throws DataAccessException {
+        throw new UnsupportedOperationException();
+    }
+}
