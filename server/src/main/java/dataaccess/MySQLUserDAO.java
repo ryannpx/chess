@@ -28,13 +28,6 @@ public class MySQLUserDAO implements UserDAO{
 
 
 
-try (var rs = ps.executeQuery()) {
-        if (rs.next()) {                          // move to the first row; false if there are no rows
-            String name = rs.getString("username");   // read a column by name
-            // ...
-        }
-    }
-
     @Override
     public void createUser(UserData user) throws DataAccessException {
         String sql = "INSERT INTO user (username, password, email) VALUES (?,?,?)";
@@ -43,6 +36,7 @@ try (var rs = ps.executeQuery()) {
             ps.setString(1, user.username()); // first ?
             ps.setString(2, user.password()); // second ?
             ps.setString(3, user.email()); // third ?
+            ps.executeUpdate();
         }
         catch (SQLException ex) {
             throw new DataAccessException("Error, unable to create user", ex);
@@ -51,11 +45,36 @@ try (var rs = ps.executeQuery()) {
 
     @Override
     public UserData getUser(String username) throws DataAccessException {
-        throw new UnsupportedOperationException();
+        String sql = "SELECT username, password, email FROM user WHERE username = ?";
+        try (var connection = DatabaseManager.getConnection();
+             var ps = connection.prepareStatement(sql)) {
+            // set the ? to username
+           ps.setString(1, username);
+            try (var rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // return a new UserData built from rs.getString("username"), "password", and "email"
+                    return new UserData(rs.getString("username"), rs.getString("password"), rs.getString("email"));
+                }
+                //  no row was found, so return null
+                else {
+                    return null;
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException("Error: unable to get user", ex);
+        }
     }
 
     @Override
     public void clear() throws DataAccessException {
-        throw new UnsupportedOperationException();
+        String sql = "TRUNCATE user";
+        try (var connection = DatabaseManager.getConnection();
+             var ps = connection.prepareStatement(sql)) {
+            ps.executeUpdate();
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error, unable to create user", ex);
+        }
+
     }
 }
