@@ -104,11 +104,30 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public void updateGame(GameData game) throws DataAccessException {
-        throw new UnsupportedOperationException();
+        String sql = "UPDATE game SET whiteUsername = ?, blackUsername = ?, gameName = ?, game = ?, WHERE gameID = ?";
+        try (var connection = DatabaseManager.getConnection();
+             var ps = connection.prepareStatement(sql)) {
+            ps.setString(1, game.whiteUsername()); // first ?
+            ps.setString(2, game.blackUsername()); // second ?
+            ps.setString(3, game.gameName()); // third ?
+            ps.setString(4, new Gson().toJson(game.game()));
+            ps.setString(5, String.valueOf(game.gameID()));
+            ps.executeUpdate();
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error, unable to create user", ex);
+        }
     }
 
     @Override
     public void clear() throws DataAccessException {
-        throw new UnsupportedOperationException();
+        String sql = "TRUNCATE game"; //sql command
+        try (var connection = DatabaseManager.getConnection();
+             var ps = connection.prepareStatement(sql)) {
+            ps.executeUpdate();
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error, unable to clear the game", ex);
+        }
     }
 }
