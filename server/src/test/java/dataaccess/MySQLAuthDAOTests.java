@@ -67,10 +67,9 @@ public class MySQLAuthDAOTests {
     @Test
     public void deleteAuthSuccess() throws Exception {
         authDAO.createAuth(new AuthData("authToken", "steve"));
-        AuthData delete = authDAO.deleteAuth("authToken");
+        authDAO.deleteAuth("authToken");
 
-        assertNull(delete);
-
+        assertNull(authDAO.getAuth("authToken"));
 
 
     }
@@ -78,7 +77,10 @@ public class MySQLAuthDAOTests {
     @Test
     public void deleteWrongTokenAuth() throws Exception {
 
+        authDAO.createAuth(new AuthData("authToken", "steve"));
+        authDAO.deleteAuth("fakeToken");
 
+        assertNotNull(authDAO.getAuth("authToken"));
 
     }
 
