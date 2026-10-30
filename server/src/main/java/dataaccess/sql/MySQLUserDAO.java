@@ -1,12 +1,15 @@
-package dataaccess;
+package dataaccess.sql;
 
 
+import dataaccess.DataAccessException;
+import dataaccess.DatabaseManager;
+import dataaccess.UserDAO;
 import model.UserData;
 import java.sql.SQLException;
 
-public class MySQLUserDAO implements UserDAO{
+public class MySQLUserDAO implements UserDAO {
 
-    public MySQLUserDAO() throws DataAccessException{
+    public MySQLUserDAO() throws DataAccessException {
         DatabaseManager.createDatabase();
         String sql = """
             CREATE TABLE IF NOT EXISTS user (

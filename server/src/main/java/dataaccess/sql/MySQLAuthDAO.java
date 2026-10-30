@@ -1,12 +1,15 @@
-package dataaccess;
+package dataaccess.sql;
 
+import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
+import dataaccess.DatabaseManager;
 import model.AuthData;
 
 import java.sql.SQLException;
 
-public class MySQLAuthDAO implements AuthDAO{
+public class MySQLAuthDAO implements AuthDAO {
 
-    public MySQLAuthDAO() throws DataAccessException{
+    public MySQLAuthDAO() throws DataAccessException {
         DatabaseManager.createDatabase();
         String sql = """
                 CREATE TABLE IF NOT EXISTS auth (
