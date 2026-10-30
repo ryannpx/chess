@@ -1,9 +1,12 @@
 package dataaccess;
 import model.AuthData;
+import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.crypto.Data;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MySQLAuthDAOTests {
     private MySQLAuthDAO authDAO;
@@ -22,44 +25,72 @@ public class MySQLAuthDAOTests {
 
     @Test
     public void createAuthSuccess() throws Exception {
+        authDAO.createAuth(new AuthData("authToken", "steve"));
+
+        AuthData found = authDAO.getAuth("authToken");
+        assertNotNull(found);
+        assertEquals("steve", found.username());
+    }
+
+    @Test
+    public void createAuthDupe() throws Exception {
+        authDAO.createAuth(new AuthData("authToken", "steve"));
+
+        assertThrows(DataAccessException.class, () ->
+                authDAO.createAuth(new AuthData("authToken", "steve")));
 
 
 
     }
 
     @Test
-    public void createAuthSuccess() throws Exception {
+    public void getAuthSuccess() throws Exception {
+        authDAO.createAuth(new AuthData("authToken", "steve"));
+
+        AuthData auth = authDAO.getAuth("authToken");
+        assertEquals("authToken", auth.authToken());
+        assertEquals("steve", auth.username());
+
+
+    }
+
+    @Test
+    public void getAuthNotFoundHaha() throws Exception {
+        authDAO.getAuth("fakeTokenYay");
+        AuthData found = authDAO.getAuth("fakeTokenYay");
+
+        assertNull(found);
+
+
+    }
+
+    @Test
+    public void deleteAuthSuccess() throws Exception {
+        authDAO.createAuth(new AuthData("authToken", "steve"));
+        AuthData delete = authDAO.deleteAuth("authToken");
+
+        assertNull(delete);
 
 
 
     }
 
     @Test
-    public void createAuthSuccess() throws Exception {
+    public void deleteWrongTokenAuth() throws Exception {
 
 
 
     }
 
-    @Test
-    public void createAuthSuccess() throws Exception {
-
-
-
-    }
 
     @Test
-    public void createAuthSuccess() throws Exception {
+    public void clearSuccess() throws Exception {
+        authDAO.createAuth(new AuthData("", ""));
 
 
 
-    }
-
-    @Test
-    public void createAuthSuccess() throws Exception {
-
-
-
+        authDAO.clear();
+        assertNull(authDAO.getAuth(""));
     }
 
 
