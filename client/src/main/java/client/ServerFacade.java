@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class ServerFacade {
     private final String serverUrl;
@@ -27,7 +28,15 @@ public class ServerFacade {
         }
         if (authToken != null) {
             //auth
+            builder.header("authorization", authToken);
         }
+
+        HttpResponse<String> response;
+
+        try{
+            response = client.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+        }
+        catch(exception)
     }
 
 }
