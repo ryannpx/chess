@@ -2,6 +2,7 @@ package client;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -36,7 +37,10 @@ public class ServerFacade {
         try{
             response = client.send(builder.build(), HttpResponse.BodyHandlers.ofString());
         }
-        catch(exception)
+        catch(IOException | InterruptedException ex) {
+            throw new ResponseException
+
+        }
     }
 
 }
