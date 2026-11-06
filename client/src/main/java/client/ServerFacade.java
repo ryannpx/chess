@@ -8,6 +8,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
+import model.*;
 
 public class ServerFacade {
     private final String serverUrl;
@@ -15,7 +16,7 @@ public class ServerFacade {
     private final Gson gson = new Gson();
 
     public ServerFacade(int port) {
-        serverUrl = "http://localhost: " + port;
+        serverUrl = "http://localhost:" + port;
     }
 
     private <T> T makeRequest(String method, String path, Object body, String authToken, Class<T>
