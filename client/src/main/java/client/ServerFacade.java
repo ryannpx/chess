@@ -52,7 +52,14 @@ public class ServerFacade {
 
         return gson.fromJson(response.body(), responseclass);
 
+    }
 
+    public RegisterResult register(String username, String password, String email) throws ResponseException {
+        return makeRequest("POST", "/user", new RegisterRequest(username, password, email), null, RegisterResult.class);
+    }
+
+    public void clear() throws ResponseException {
+        makeRequest("DELETE", "/db", null, null, null);
     }
 
 
