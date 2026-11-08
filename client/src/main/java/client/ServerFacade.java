@@ -71,7 +71,11 @@ public class ServerFacade {
         makeRequest("DELETE", "/session", null, authToken, null);
     }
 
+//create list join
 
+    public CreateGameResult createGame(String authToken, String gameName) throws ResponseException{
+        return makeRequest("POST", "/game", new CreateGameRequest(gameName), authToken, CreateGameRequest.class);
+    }
 
 
 
