@@ -10,7 +10,7 @@ public class ChessClient {
     private String authToken = null;
     private String username = null;
 
-
+    private final java.util.ArrayList<Integer> gameIDs = new java.util.ArrayList<>();
 
     public ChessClient(int port) {
         facade = new ServerFacade(port);
@@ -30,15 +30,19 @@ public class ChessClient {
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
 
 
+
             return switch (state) {
                 case SIGNEDOUT -> switch (command) {
                     case "register" -> register(params);
                     case "login" -> login(params);
                     case "quit" -> "quit";
                     default -> help();
-                };
+                }; //create list play observe
                 case SIGNEDIN -> switch (command) {
                     case "logout" -> logout();
+                    case "create" -> createGame(params);
+                    case "list" -> listGames();
+                    case "play" -> playGame(params);
                     case "quit" -> "quit";
                     default -> help();
                 };
@@ -106,6 +110,42 @@ public class ChessClient {
 
             return "Logged out\n";
         }
+
+
+    private String createGame(String[] params) throws ResponseException {
+        if (params.length != 1) {
+            return "Expected: create <NAME>\n";
+        }
+
+        facade.createGame(authToken, params[0]);
+
+
+        return "Created game: " + params[0] + "\n";
+    }
+    private String listGames() throws ResponseException {
+        var result = facade.listGames(authToken);
+
+        gameIDs.clear();
+
+        var output = new StringBuilder();
+        int i = 1;
+
+
+        for (var game : result.games()) {
+            gameIDs.add(game.gameID());
+            String white = game.whiteUsername() != null ? game.whiteUsername() : "(empty)";
+            String black = game.blackUsername() != null ? game.blackUsername() : "(empty)";
+            output.append(i).append(". ").append(game.gameName())
+                    .append(" | White: ").append(white)
+                    .append(" | Black: ").append(black).append("\n");
+            i++;
+        }
+        if (i == 1) {
+            return "No games\n";
+        }
+
+        return output.toString();
+    }
 
 
 
