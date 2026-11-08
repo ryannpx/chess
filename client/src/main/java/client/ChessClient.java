@@ -1,6 +1,8 @@
 package client;
 
-import
+//import;
+
+import java.util.Arrays;
 
 public class ChessClient {
     private final ServerFacade serverFacade;
@@ -21,7 +23,65 @@ public class ChessClient {
         return state;
     }
 
+    public String eval(String input) {
+        try {
+            var tokens = input.toLowerCase().split("\\s+");
+            var command = (tokens.length > 0) ? tokens[0] : "help";
+            var params = Arrays.copyOfRange(tokens, 1, tokens.length);
 
+
+            return switch (state) {
+                case SIGNEDOUT -> switch (command) {
+                    case "register" -> register(params);
+                    case "login" -> login(params);
+                    case "quit" -> "quit";
+                    default -> help();
+                };
+                case SIGNEDIN -> switch (command) {
+                    case "logout" -> logout();
+                    case "quit" -> "quit";
+                    default -> help();
+                };
+            };
+
+
+        } catch (ResponseException ex) {
+            return ex.getMessage();
+        }
+
+
+
+
+        private String help() {
+            if (state == State.SIGNEDOUT) {
+                return """
+                    register <USERNAME> <PASSWORD> <EMAIL> - create an account
+                    login <USERNAME> <PASSWORD> - sign in
+                    help - show this help
+                    quit - exit the program
+                    """;
+            }
+            return """
+                logout - sign out
+                help - show this help
+                quit - exit the program
+                """;
+        }
+        private String register(String[] params) throws ResponseException {
+            // TODO next
+            return "not implemented";
+        }
+        private String login(String[] params) throws ResponseException {
+            // TODO next
+            return "not implemented";
+        }
+        private String logout() throws ResponseException {
+            // TODO later
+            return "not implemented";
+        }
+
+
+    }
 
 
 
