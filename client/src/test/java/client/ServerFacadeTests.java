@@ -102,4 +102,61 @@ public class ServerFacadeTests {
                 facade.logout("fake-token"));
     }
 
+
+    //more tests ugufhurgggh
+    @Test
+    public void createGameSuccess() throws Exception {
+        RegisterResult registered = facade.register("yay", "password", "yay@gmail.com");
+
+        CreateGameResult result = facade.createGame(registered.authToken(), "myGame");
+
+        assertNotNull(result);
+        assertTrue(result.gameID() > 0);
+    }
+
+    @Test
+    public void createGameUnauthorized() throws Exception {
+        assertThrows(ResponseException.class, () ->
+                facade.createGame("fake-token", "myGame"));
+    }
+
+
+
+    @Test
+    public void listGamesSuccess() throws Exception {
+        RegisterResult registered = facade.register("woo", "password", "woo@gmail.com");
+        facade.createGame(registered.authToken(), "game1");
+        facade.createGame(registered.authToken(), "game2");
+
+        ListGamesResult result = facade.listGames(registered.authToken());
+
+        assertEquals(2, result.games().size());
+    }
+
+    @Test
+    public void listGamesUnauthorized() throws Exception {
+        assertThrows(ResponseException.class, () ->
+                facade.listGames("fake-token"));
+    }
+
+    @Test
+    public void joinGameSuccess() throws Exception {
+        RegisterResult registered = facade.register("meow", "password", "meow@gmail.com");
+        CreateGameResult created = facade.createGame(registered.authToken(), "myGame");
+
+        facade.joinGame(registered.authToken(), "WHITE", created.gameID());
+
+        ListGamesResult listed = facade.listGames(registered.authToken());
+        var game = listed.games().iterator().next();
+        assertEquals("meow", game.whiteUsername());
+    }
+
+    @Test
+    public void joinGameBadColor() throws Exception {
+        RegisterResult registered = facade.register("oye", "password", "oye@gmail.com");
+        CreateGameResult created = facade.createGame(registered.authToken(), "myGame");
+
+        assertThrows(ResponseException.class, () ->
+                facade.joinGame(registered.authToken(), "GREEN", created.gameID()));
+    }
 }
