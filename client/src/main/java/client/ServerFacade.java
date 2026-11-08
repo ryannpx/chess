@@ -62,5 +62,9 @@ public class ServerFacade {
         makeRequest("DELETE", "/db", null, null, null);
     }
 
+    public LoginResult login(String username, String password) throws ResponseException{
+        return makeRequest("POST", "/session", new LoginRequest(username, password), null, LoginResult.class);
+
+    }
 
 }
