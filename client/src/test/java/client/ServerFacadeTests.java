@@ -7,7 +7,8 @@ import model.RegisterResult;
 import model.LoginResult;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import model.CreateGameResult;
+import model.ListGamesResult;
 
 public class ServerFacadeTests {
 
