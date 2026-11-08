@@ -66,8 +66,15 @@ public class ChessClient {
                     """;
         }
         private String register (String[]params) throws ResponseException {
-            // TODO next
-            return "not implemented";
+            if (params.length != 3) {
+                return "Expected: register <USERNAME> <PASSWORD> <EMAIL>\n";
+            }
+            var result = facade.register(params[0], params[1], params[2]);
+            state = State.SIGNEDIN;
+            authToken = result.authToken();
+            username = result.username();
+            return "Registered + logged in as " + username + "\n";
+
         }
         private String login (String[]params) throws ResponseException {
             // TODO next
