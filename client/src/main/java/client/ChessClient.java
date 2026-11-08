@@ -110,7 +110,7 @@ public class ChessClient {
 
 
 
-
+// run server first, then client
 
 
 
