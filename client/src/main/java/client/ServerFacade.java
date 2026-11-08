@@ -67,4 +67,8 @@ public class ServerFacade {
 
     }
 
+    public void logout(String authToken) throws ResponseException {
+        makeRequest("DELETE", "/session", null, authToken, null);
+    }
+
 }
