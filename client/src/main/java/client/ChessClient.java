@@ -5,7 +5,7 @@ package client;
 import java.util.Arrays;
 
 public class ChessClient {
-    private final ServerFacade serverFacade;
+    private final ServerFacade facade;
     private State state = State.SIGNEDOUT;
     private String authToken = null;
     private String username = null;
@@ -48,40 +48,37 @@ public class ChessClient {
         } catch (ResponseException ex) {
             return ex.getMessage();
         }
+    }
 
-
-
-
-        private String help() {
+        private String help () {
             if (state == State.SIGNEDOUT) {
                 return """
-                    register <USERNAME> <PASSWORD> <EMAIL> - create an account
-                    login <USERNAME> <PASSWORD> - sign in
+                        register <USERNAME> <PASSWORD> <EMAIL> - create an account
+                        login <USERNAME> <PASSWORD> - sign in
+                        help - show this help
+                        quit - exit the program
+                        """;
+            }
+            return """
+                    logout - sign out
                     help - show this help
                     quit - exit the program
                     """;
-            }
-            return """
-                logout - sign out
-                help - show this help
-                quit - exit the program
-                """;
         }
-        private String register(String[] params) throws ResponseException {
+        private String register (String[]params) throws ResponseException {
             // TODO next
             return "not implemented";
         }
-        private String login(String[] params) throws ResponseException {
+        private String login (String[]params) throws ResponseException {
             // TODO next
             return "not implemented";
         }
-        private String logout() throws ResponseException {
+        private String logout () throws ResponseException {
             // TODO later
             return "not implemented";
         }
 
 
-    }
 
 
 
