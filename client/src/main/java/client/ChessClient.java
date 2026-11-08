@@ -42,7 +42,7 @@ public class ChessClient {
                     case "logout" -> logout();
                     case "create" -> createGame(params);
                     case "list" -> listGames();
-                    case "play" -> playGame(params);
+                   // case "play" -> playGame(params); not done
                     case "quit" -> "quit";
                     default -> help();
                 };
@@ -60,13 +60,13 @@ public class ChessClient {
                         register <USERNAME> <PASSWORD> <EMAIL> - create an account
                         login <USERNAME> <PASSWORD> - sign in
                         help - show this help
-                        quit - exit the program
+                        quit - exit
                         """;
             }
             return """
                     logout - sign out
                     help - show this help
-                    quit - exit the program
+                    quit - exit
                     """;
         }
         private String register (String[]params) throws ResponseException {
@@ -136,8 +136,8 @@ public class ChessClient {
             String white = game.whiteUsername() != null ? game.whiteUsername() : "(empty)";
             String black = game.blackUsername() != null ? game.blackUsername() : "(empty)";
             output.append(i).append(". ").append(game.gameName())
-                    .append(" | White: ").append(white)
-                    .append(" | Black: ").append(black).append("\n");
+                    .append("  White: ").append(white)
+                    .append("  Black: ").append(black).append("\n");
             i++;
         }
         if (i == 1) {
