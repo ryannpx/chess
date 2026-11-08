@@ -79,4 +79,8 @@ public class ServerFacade {
 
 
 
+    public ListGamesResult listGames(String authToken) throws ResponseException {
+        return makeRequest("GET", "/game", null, authToken, ListGamesResult.class);
+    }
+
 }
