@@ -3,11 +3,10 @@ package client;
 import org.junit.jupiter.api.*;
 import server.Server;
 import model.RegisterResult;
-import server.Server;
+
 import model.LoginResult;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static passoff.server.StandardAPITests.serverFacade;
 
 
 public class ServerFacadeTests {
