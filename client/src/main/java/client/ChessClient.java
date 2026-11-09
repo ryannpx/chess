@@ -45,7 +45,8 @@ public class ChessClient {
                     case "logout" -> logout();
                     case "create" -> createGame(params);
                     case "list" -> listGames();
-                   // case "play" -> playGame(params); not done
+                   case "play" -> playGame(params);
+                    case "observe" -> observeGame(params);
                     case "quit" -> "quit";
                     default -> help();
                 };
@@ -205,12 +206,12 @@ public class ChessClient {
         try {
             listNum = Integer.parseInt(params[0]);
         } catch (NumberFormatException ex) {
-            return "Game number must be an integer\n";
+            return "Game number must be a number\n";
         }
 
 
         if (listNum < 1 || listNum > gameIDs.size()) {
-            return "Invalid game number. Run list first.\n";
+            return "This is not a valid game number. Check the list first.\n";
         }
 
 
