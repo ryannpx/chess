@@ -17,19 +17,19 @@ public class Board {
         int rowEnd = whiteView ? 1 : 8;
         int rowStep = whiteView ? -1 : 1;
         int colStart = whiteView ? 1 : 8;
-        int colEnd = whiteView ? 1 : 8;
+        int colEnd = whiteView ? 8 : 1;
         int colStep = whiteView ? 1 : -1;
 
 
-        output.append(header(colStart,colEnd,colStep));
+        output.append(header(colStart, colEnd, colStep));
 
         for (int row = rowStart; whiteView ? row >= rowEnd : row <= rowEnd; row += rowStep) {
-            output.append(""),append(row).append("");
+            output.append("").append(row).append("");
 
             for (int col = colStart; whiteView ? col <= colEnd : col >= colEnd; col += colStep) {
-                boolean white = (row + col) % 2 !0;
+                boolean white = (row + col) % 2 != 0;
                 String background = white ? SET_BG_COLOR_LIGHT_GREY : SET_BG_COLOR_DARK_GREY;
-                ChessPiece piece = board.getPiece(new ChessPosition(row,col));
+                ChessPiece piece = board.getPiece(new ChessPosition(row, col));
                 output.append(background).append(pieceString(piece)).append(RESET_BG_COLOR);
             }
             output.append(" ").append(row).append("\n");
@@ -39,7 +39,8 @@ public class Board {
         return output.toString();
 
 
-        }
+    }
+
     private static String header(int colStart, int colEnd, int colStep) {
         var line = new StringBuilder("    ");
         for (int col = colStart; colStep > 0 ? col <= colEnd : col >= colEnd; col += colStep) {
@@ -47,7 +48,6 @@ public class Board {
         }
         return line.append("\n").toString();
     }
-
 
 
     private static String pieceString(ChessPiece piece) {

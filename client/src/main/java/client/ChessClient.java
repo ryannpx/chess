@@ -28,8 +28,8 @@ public class ChessClient {
 
     public String eval(String input) {
         try {
-            var tokens = input.toLowerCase().split("\\s+");
-            var command = (tokens.length > 0) ? tokens[0] : "help";
+            var tokens = input.split("\\s+");
+            var command = (tokens.length > 0) ? tokens[0].toLowerCase() : "help";
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
 
 
@@ -163,7 +163,7 @@ public class ChessClient {
     }
 
     private String playGame(String[] params) throws ResponseException {
-        if (params.lenth != 2) {
+        if (params.length != 2) {
             return "Expected: play <#> <WHITE | BLACK>\n";
         }
 
@@ -185,12 +185,12 @@ public class ChessClient {
         int gameID = gameIDs.get(listNum-1);
         facade.joinGame(authToken,color,gameID);
 
-        var board = new ChessGame().getboard();
+        var board = new ChessGame().getBoard();
         var perspective = color.equals("WHITE")
                 ? ChessGame.TeamColor.WHITE
                 : ChessGame.TeamColor.BLACK;
 
-        return "Joined game " + listNum + "as" color + "\n" + Board.print(board,perspective);
+        return "Joined game  " + listNum + " as " + color + "\n" + Board.print(board,perspective);
 
 
     }
