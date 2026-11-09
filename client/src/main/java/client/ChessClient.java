@@ -194,7 +194,32 @@ public class ChessClient {
 
     }
 
+    private String observeGame(String[] params) throws ResponseException {
+        if (params.length != 1) {
+            return "Expected: observe <#>\n";
+        }
 
+        int listNum;
+
+
+        try {
+            listNum = Integer.parseInt(params[0]);
+        } catch (NumberFormatException ex) {
+            return "Game number must be an integer\n";
+        }
+
+
+        if (listNum < 1 || listNum > gameIDs.size()) {
+            return "Invalid game number. Run list first.\n";
+        }
+
+
+        var board = new ChessGame().getBoard();
+
+
+        return "Observing game " + listNum + "\n"
+                + Board.print(board, ChessGame.TeamColor.WHITE);
+    }
 
 
 
