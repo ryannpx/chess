@@ -38,7 +38,7 @@ public class UserService {
         }
         UserData user = userDAO.getUser(request.username());
         if (user == null || !BCrypt.checkpw(request.password(), user.password())) {
-            throw new UnauthorizedException("Error: unauthorized");
+            throw new UnauthorizedException("Error: unauthorized. Wrong password");
         }
 
         String token = createToken(request.username());
