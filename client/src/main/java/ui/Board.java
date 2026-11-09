@@ -27,8 +27,8 @@ public class Board {
             output.append("").append(row).append("");
 
             for (int col = colStart; whiteView ? col <= colEnd : col >= colEnd; col += colStep) {
-                boolean white = (row + col) % 2 != 0;
-                String background = white ? SET_BG_COLOR_LIGHT_GREY : SET_BG_COLOR_DARK_GREY;
+                boolean lighterColor = (row + col) % 2 != 0;
+                String background = lighterColor ? SET_BG_COLOR_LIGHT_GREY : SET_BG_COLOR_DARK_GREY;
                 ChessPiece piece = board.getPiece(new ChessPosition(row, col));
                 output.append(background).append(pieceString(piece)).append(RESET_BG_COLOR);
             }
