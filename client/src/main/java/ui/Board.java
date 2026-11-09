@@ -24,7 +24,7 @@ public class Board {
         output.append(header(colStart, colEnd, colStep));
 
         for (int row = rowStart; whiteView ? row >= rowEnd : row <= rowEnd; row += rowStep) {
-            output.append("").append(row).append("");
+            output.append(" ").append(row).append(" ");
 
             for (int col = colStart; whiteView ? col <= colEnd : col >= colEnd; col += colStep) {
                 boolean lighterColor = (row + col) % 2 != 0;
@@ -57,8 +57,9 @@ public class Board {
 
 
         boolean white = piece.getTeamColor() == ChessGame.TeamColor.WHITE;
-        return switch (piece.getPieceType()) {
-
+        // Force colors so dark terminals don't make white/black unicode look swapped
+        String color = white ? SET_TEXT_COLOR_RED : SET_TEXT_COLOR_BLUE;
+        String symbol = switch (piece.getPieceType()) {
             case KING -> white ? WHITE_KING : BLACK_KING;
             case QUEEN -> white ? WHITE_QUEEN : BLACK_QUEEN;
             case BISHOP -> white ? WHITE_BISHOP : BLACK_BISHOP;
@@ -66,5 +67,6 @@ public class Board {
             case ROOK -> white ? WHITE_ROOK : BLACK_ROOK;
             case PAWN -> white ? WHITE_PAWN : BLACK_PAWN;
         };
+        return color + symbol + RESET_TEXT_COLOR;
     }
 }

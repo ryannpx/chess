@@ -68,6 +68,10 @@ public class ChessClient {
                         """;
             }
             return """
+                    create <NAME> - create a game
+                    list - list games
+                    play <#> <WHITE|BLACK> - join a game
+                    observe <#> - observe a game
                     logout - sign out
                     help - show this help
                     quit - exit
