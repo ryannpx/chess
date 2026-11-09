@@ -2,6 +2,9 @@ package client;
 
 //import;
 
+import chess.ChessGame;
+import ui.Board;
+
 import java.util.Arrays;
 
 public class ChessClient {
@@ -69,6 +72,8 @@ public class ChessClient {
                     quit - exit
                     """;
         }
+
+
         private String register (String[]params) throws ResponseException {
             if (params.length != 3) {
                 return "Expected: register <USERNAME> <PASSWORD> <EMAIL>\n";
@@ -85,6 +90,9 @@ public class ChessClient {
             return "Registered + logged in as " + username + "\n";
 
         }
+
+
+
         private String login (String[]params) throws ResponseException {
             if (params.length != 2) {
                 return "Expected: login <USERNAME> <PASSWORD>\n";
@@ -100,6 +108,9 @@ public class ChessClient {
 
             return "Logged in as " + username + "\n";
         }
+
+
+
         private String logout () throws ResponseException {
             facade.logout(authToken);
             state = State.SIGNEDOUT;
@@ -122,6 +133,9 @@ public class ChessClient {
 
         return "Created game: " + params[0] + "\n";
     }
+
+
+
     private String listGames() throws ResponseException {
         var result = facade.listGames(authToken);
 
@@ -146,6 +160,40 @@ public class ChessClient {
 
         return output.toString();
     }
+
+    private String playGame(String[] params) throws ResponseException {
+        if (params.lenth != 2) {
+            return "Expected: play <#> <WHITE | BLACK>\n";
+        }
+
+        int listNum;
+
+        try{
+            listNum = Integer.parseInt(params[0]);
+        }
+        catch (NumberFormatException ex) {
+            return "Game number must be a number\n";
+        }
+
+        if (listNum <1 || listNum > gameIDs.size()) {
+            return "This is not a valid game number. Check the list first.\n";
+
+        }
+
+        String color = params[1].toUpperCase();
+        int gameID = gameIDs.get(listNum-1);
+        facade.joinGame(authToken,color,gameID);
+
+        var board = new ChessGame().getboard();
+        var perspective = color.equals("WHITE")
+                ? ChessGame.TeamColor.WHITE
+                : ChessGame.TeamColor.BLACK;
+
+        return "Joined game " + listNum + "as" color + "\n" + Board.print(board,perspective);
+
+
+    }
+
 
 
 
