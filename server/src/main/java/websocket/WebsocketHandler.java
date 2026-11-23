@@ -9,13 +9,13 @@ public class WebsocketHandler {
 
     private final AuthDAO authDAO;
     private final GameDAO gameDAO;
-    private final ConnectionManager connnctions;
+    private final ConnectionManager connections;
     private final Gson gson;
 
     public WebsocketHandler(AuthDAO authDAO, GameDAO gameDAO) {
-        this.authDAO = authDAO;
-        this.gameDAO = gameDAO;
-        this.connnctions = new ConnectionManager();
+        this.authDAO = authDAO; // validate tokens and usernames
+        this.gameDAO = gameDAO; // load and update games
+        this.connections = new ConnectionManager(); //tracks clients connected rn
         this.gson = new Gson();
     }
 
