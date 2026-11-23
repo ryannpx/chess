@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConnectionManager {
 
     private final Map<WsContext, WebsocketConnection> connections =
-            new ConcurrentHashMap<>();
+            new ConcurrentHashMap<>(); //multiple websockets at a time
 
 
 
