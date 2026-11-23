@@ -33,5 +33,23 @@ public class ConnectionManager {
     }
 
 
+    public void broadcast(
+            int gameID,
+            WsContext excludedContext,
+            ServerMessage message
+    ) {String json = gson.toJson(message);
+
+        for (WebsocketConnection connection : connections.values()){
+            boolean sameGame = connection.gameID() == gameID;
+            boolean notExcludedContent = connection.context() != excludedContext;
+
+            if (sameGame && notExcludedContent) {
+                connection.context().send(json);
+            }
+        }
+
+
+    }
+
 
 }
