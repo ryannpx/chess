@@ -62,6 +62,31 @@ public class WebsocketHandler {
 
 
 
+    private void connect(WsMessageContext context, UserGameCommand command) throws Exception {
+        AuthData auth = authDAO.getAuth(command.getAuthToken());
+        GameData game = gameDAO.getGame(command.getGameID());
+
+
+
+        if (auth == null) {
+            throw new IllegalArgumentException("Error: Empty authentication token.");
+        }
+
+        if (game == null) {
+            throw new IllegalArgumentException("Error: Empty or invalid game.");
+        }
+
+
+        String username = auth.username(); //get username
+        String role;
+
+        if (username.equals(game.whiteUsername())) {
+            role = "WHITE";
+        }
+        else if (username.equals(game.blackUsername())) {
+            role = "BLACK";
+        }
+    }
 
 
 
