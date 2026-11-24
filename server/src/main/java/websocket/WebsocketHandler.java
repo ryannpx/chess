@@ -16,6 +16,8 @@ import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessage;
 
+import static javax.management.remote.JMXConnectorFactory.connect;
+
 public class WebsocketHandler {
 
     private final AuthDAO authDAO;
@@ -40,8 +42,29 @@ public class WebsocketHandler {
 
             }
 
-            if (command.getCommandType() == )
+            if (command.getCommandType() == UserGameCommand.CommandType.CONNECT) {
+                connect(context, command);
+            } else {
+                connections.send(context, new ErrorMessage("This command isn't implemented yet"));
+            }
+        } catch (Exception exception) {
+            String exceptDetails = exception.getMessage() == null
+                    ? "invalid command"
+                    : exception.getLocalizedMessage();
+
+            connections.send(
+                    context,
+                    new ErrorMessage("Error: + "exceptDetails)
+            );
+
         }
+    }
+
+
+
+
+
+
     }
 
 }
