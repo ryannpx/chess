@@ -30,4 +30,18 @@ public class WebsocketHandler {
         this.gson = new Gson();
     }
 
+
+    public void onMessage(WsMessageContext context) {
+        try {
+            UserGameCommand command = gson.fromJson(context.message(), UserGameCommand.class);
+
+            if (command == null || command.getCommandType() == null) {
+                throw new IllegalArgumentException(("Invalid command. Please type something."));
+
+            }
+
+            if (command.getCommandType() == )
+        }
+    }
+
 }
