@@ -86,6 +86,28 @@ public class WebsocketHandler {
         else if (username.equals(game.blackUsername())) {
             role = "BLACK";
         }
+        else {
+            role = "OBSERVER";
+        }
+
+
+        connections.add(username, game.gameID(), context);
+        connections.send(context, new LoadGameMessage(game));
+
+
+        String notification = role.equals("OBSERVER")
+                ? username + " connected as an observer"
+                : username + " connected as " + role;
+        connections.broadcast(
+                game.gameID(),
+                context,
+                new NotificationMessage(notification)
+        );
+    }
+
+    public void onClose(WsCloseContext context) {
+        connections.remove(context);
+    }
     }
 
 
