@@ -2,18 +2,26 @@ package server;
 
 import com.google.gson.Gson;
 import dataaccess.*;
+
 import dataaccess.sql.MySQLAuthDAO;
 import dataaccess.sql.MySQLGameDAO;
 import dataaccess.sql.MySQLUserDAO;
+
+
 import handler.*;
 import io.javalin.*;
 import io.javalin.http.Context;
+
+
 import service.*;
 import java.util.Map;
+
+import websocket.WebsocketHandler;
 
 public class Server {
 
     private final Javalin javalin;
+
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
@@ -34,6 +42,8 @@ public class Server {
         GameHandler gameHandler = new GameHandler(new GameService(gameDAO, authDAO));
         ClearHandler clearHandler = new ClearHandler(new ClearService(userDAO, authDAO, gameDAO));
 
+        WebsocketHandler websocketHandler = new WebsocketHandler(authDAO, gameDAO);
+
         javalin.delete("/db", clearHandler::clear);
         javalin.post("/user", userHandler::register);
         javalin.post("/session", userHandler::login);
@@ -41,6 +51,11 @@ public class Server {
         javalin.get("/game", gameHandler::listGames);
         javalin.post("/game", gameHandler::createGame);
         javalin.put("/game", gameHandler::joinGame);
+
+        javalin.ws("/ws", ws -> {
+            ws.onMessage(websocketHandler::onMessage);
+            ws.onClose(websocketHandler::onClose);
+        }); //sends the events
 
         javalin.exception(BadRequestException.class, (e, ctx) -> sendError(ctx, 400, e.getMessage()));
         javalin.exception(UnauthorizedException.class, (e, ctx) -> sendError(ctx, 401, e.getMessage()));
