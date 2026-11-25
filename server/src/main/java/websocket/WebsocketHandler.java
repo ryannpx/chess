@@ -44,9 +44,12 @@ public class WebsocketHandler {
 
             if (command.getCommandType() == UserGameCommand.CommandType.CONNECT) {
                 connect(context, command);
+
             } else {
-                connections.send(context, new ErrorMessage("This command isn't implemented yet"));
+                connections.send(context, new ErrorMessage("Error: This command isn't implemented yet"));
             }
+
+
         } catch (Exception exception) {
             String exceptDetails = exception.getMessage() == null
                     ? "invalid command"
@@ -54,7 +57,7 @@ public class WebsocketHandler {
 
             connections.send(
                     context,
-                    new ErrorMessage("Error: + "exceptDetails)
+                    new ErrorMessage("Error: " + exceptDetails)
             );
 
         }
@@ -108,10 +111,5 @@ public class WebsocketHandler {
     public void onClose(WsCloseContext context) {
         connections.remove(context);
     }
-    }
-
-
-
-    }
-
 }
+
