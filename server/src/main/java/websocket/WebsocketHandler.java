@@ -15,6 +15,7 @@ import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessage;
+import websocket.commands.MakeTheMoveCommand;
 
 import static javax.management.remote.JMXConnectorFactory.connect;
 
@@ -37,16 +38,20 @@ public class WebsocketHandler {
         try {
             UserGameCommand command = gson.fromJson(context.message(), UserGameCommand.class);
 
-            if (command == null || command.getCommandType() == null) {
-                throw new IllegalArgumentException(("Invalid command. Please type something."));
-
-            }
-
             if (command.getCommandType() == UserGameCommand.CommandType.CONNECT) {
                 connect(context, command);
 
+            } else if (command.getCommandType() == UserGameCommand.CommandType.MAKE_MOVE) {
+                MakeTheMoveCommand moveCommand =
+                        gson.fromJson(context.message(), MakeTheMoveCommand.class);
+
+                makeMove(context, moveCommand);
+
             } else {
-                connections.send(context, new ErrorMessage("Error: This command isn't implemented yet"));
+                connections.send(
+                        context,
+                        new ErrorMessage("Error: This command isn't implemented yet")
+                );
             }
 
 
@@ -91,6 +96,13 @@ public class WebsocketHandler {
         }
         else {
             role = "OBSERVER";
+        }
+
+        private void makeMove(
+                WsMessageContext context,
+                MakeTheMoveCommand command
+        ) throws Exception {
+            // next
         }
 
 
